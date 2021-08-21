@@ -17,6 +17,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Britannica.Infrastructure",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Britannica.UnitTest", "Britannica.UnitTest\Britannica.UnitTest.csproj", "{1062B562-8F49-4518-9426-EA4CCEEC6133}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{40A1255E-16C9-4D84-8738-627AB113AD16}"
+	ProjectSection(SolutionItems) = preProject
+		Flight-Assessment.pdf = Flight-Assessment.pdf
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
