@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Britannica.Infrastructure.Migrations
 {
-    public partial class Init : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -100,6 +100,7 @@ namespace Britannica.Infrastructure.Migrations
                     RowVersion = table.Column<int>(nullable: false),
                     Row = table.Column<string>(nullable: true),
                     Number = table.Column<ushort>(nullable: false),
+                    IsAvailable = table.Column<bool>(nullable: true),
                     AircraftRef = table.Column<int>(nullable: false),
                     FlightId = table.Column<int>(nullable: true)
                 },
@@ -143,7 +144,7 @@ namespace Britannica.Infrastructure.Migrations
                 {
                     FlightId = table.Column<int>(nullable: false),
                     PassengerId = table.Column<int>(nullable: false),
-                    SeatId = table.Column<int>(nullable: true)
+                    SeatId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -178,43 +179,43 @@ namespace Britannica.Infrastructure.Migrations
 
             migrationBuilder.InsertData(
                 table: "Seats",
-                columns: new[] { "Id", "AircraftRef", "Created", "FlightId", "LastModified", "Number", "Row", "RowVersion" },
-                values: new object[] { 1, 1, new DateTime(2021, 8, 21, 20, 41, 0, 0, DateTimeKind.Utc), null, null, (ushort)1, "A", 1 });
+                columns: new[] { "Id", "AircraftRef", "Created", "FlightId", "IsAvailable", "LastModified", "Number", "Row", "RowVersion" },
+                values: new object[] { 1, 1, new DateTime(2021, 8, 21, 20, 41, 0, 0, DateTimeKind.Utc), null, null, null, (ushort)1, "A", 1 });
 
             migrationBuilder.InsertData(
                 table: "Seats",
-                columns: new[] { "Id", "AircraftRef", "Created", "FlightId", "LastModified", "Number", "Row", "RowVersion" },
-                values: new object[] { 2, 1, new DateTime(2021, 8, 21, 20, 41, 0, 0, DateTimeKind.Utc), null, null, (ushort)2, "A", 1 });
+                columns: new[] { "Id", "AircraftRef", "Created", "FlightId", "IsAvailable", "LastModified", "Number", "Row", "RowVersion" },
+                values: new object[] { 2, 1, new DateTime(2021, 8, 21, 20, 41, 0, 0, DateTimeKind.Utc), null, null, null, (ushort)2, "A", 1 });
 
             migrationBuilder.InsertData(
                 table: "Seats",
-                columns: new[] { "Id", "AircraftRef", "Created", "FlightId", "LastModified", "Number", "Row", "RowVersion" },
-                values: new object[] { 3, 1, new DateTime(2021, 8, 21, 20, 41, 0, 0, DateTimeKind.Utc), null, null, (ushort)1, "B", 1 });
+                columns: new[] { "Id", "AircraftRef", "Created", "FlightId", "IsAvailable", "LastModified", "Number", "Row", "RowVersion" },
+                values: new object[] { 3, 1, new DateTime(2021, 8, 21, 20, 41, 0, 0, DateTimeKind.Utc), null, null, null, (ushort)1, "B", 1 });
 
             migrationBuilder.InsertData(
                 table: "Seats",
-                columns: new[] { "Id", "AircraftRef", "Created", "FlightId", "LastModified", "Number", "Row", "RowVersion" },
-                values: new object[] { 4, 1, new DateTime(2021, 8, 21, 20, 41, 0, 0, DateTimeKind.Utc), null, null, (ushort)2, "B", 1 });
+                columns: new[] { "Id", "AircraftRef", "Created", "FlightId", "IsAvailable", "LastModified", "Number", "Row", "RowVersion" },
+                values: new object[] { 4, 1, new DateTime(2021, 8, 21, 20, 41, 0, 0, DateTimeKind.Utc), null, null, null, (ushort)2, "B", 1 });
 
             migrationBuilder.InsertData(
                 table: "Seats",
-                columns: new[] { "Id", "AircraftRef", "Created", "FlightId", "LastModified", "Number", "Row", "RowVersion" },
-                values: new object[] { 5, 2, new DateTime(2021, 8, 21, 20, 41, 0, 0, DateTimeKind.Utc), null, null, (ushort)1, "A", 1 });
+                columns: new[] { "Id", "AircraftRef", "Created", "FlightId", "IsAvailable", "LastModified", "Number", "Row", "RowVersion" },
+                values: new object[] { 5, 2, new DateTime(2021, 8, 21, 20, 41, 0, 0, DateTimeKind.Utc), null, null, null, (ushort)1, "A", 1 });
 
             migrationBuilder.InsertData(
                 table: "Seats",
-                columns: new[] { "Id", "AircraftRef", "Created", "FlightId", "LastModified", "Number", "Row", "RowVersion" },
-                values: new object[] { 6, 2, new DateTime(2021, 8, 21, 20, 41, 0, 0, DateTimeKind.Utc), null, null, (ushort)2, "A", 1 });
+                columns: new[] { "Id", "AircraftRef", "Created", "FlightId", "IsAvailable", "LastModified", "Number", "Row", "RowVersion" },
+                values: new object[] { 6, 2, new DateTime(2021, 8, 21, 20, 41, 0, 0, DateTimeKind.Utc), null, null, null, (ushort)2, "A", 1 });
 
             migrationBuilder.InsertData(
                 table: "Seats",
-                columns: new[] { "Id", "AircraftRef", "Created", "FlightId", "LastModified", "Number", "Row", "RowVersion" },
-                values: new object[] { 7, 2, new DateTime(2021, 8, 21, 20, 41, 0, 0, DateTimeKind.Utc), null, null, (ushort)1, "B", 1 });
+                columns: new[] { "Id", "AircraftRef", "Created", "FlightId", "IsAvailable", "LastModified", "Number", "Row", "RowVersion" },
+                values: new object[] { 7, 2, new DateTime(2021, 8, 21, 20, 41, 0, 0, DateTimeKind.Utc), null, null, null, (ushort)1, "B", 1 });
 
             migrationBuilder.InsertData(
                 table: "Seats",
-                columns: new[] { "Id", "AircraftRef", "Created", "FlightId", "LastModified", "Number", "Row", "RowVersion" },
-                values: new object[] { 8, 2, new DateTime(2021, 8, 21, 20, 41, 0, 0, DateTimeKind.Utc), null, null, (ushort)2, "B", 1 });
+                columns: new[] { "Id", "AircraftRef", "Created", "FlightId", "IsAvailable", "LastModified", "Number", "Row", "RowVersion" },
+                values: new object[] { 8, 2, new DateTime(2021, 8, 21, 20, 41, 0, 0, DateTimeKind.Utc), null, null, null, (ushort)2, "B", 1 });
 
             migrationBuilder.InsertData(
                 table: "Aircrafts",

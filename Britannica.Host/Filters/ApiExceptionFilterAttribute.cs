@@ -23,7 +23,7 @@ namespace Britannica.Host.Filters
             {
                 { typeof(ValidationException), HandleValidationException },
                 { typeof(NotFoundException), HandleNotFoundException },
-                { typeof(AppBusinessRuleException), HandleAppBusinessRuleException },
+                { typeof(BusinessRuleException), HandleAppBusinessRuleException },
             };
         }
 
@@ -108,7 +108,7 @@ namespace Britannica.Host.Filters
 
         private void HandleAppBusinessRuleException(ExceptionContext context)
         {
-            var exception = context.Exception as AppBusinessRuleException;
+            var exception = context.Exception as BusinessRuleException;
             var details = new AppBusinessRuleProblemDetails
             {
                 Type = "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.1",

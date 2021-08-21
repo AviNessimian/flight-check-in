@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Britannica.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210821214139_Init")]
-    partial class Init
+    [Migration("20210822153346_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -215,7 +215,7 @@ namespace Britannica.Infrastructure.Migrations
                     b.Property<int>("PassengerId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("SeatId")
+                    b.Property<int>("SeatId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("FlightId", "PassengerId");
@@ -236,6 +236,9 @@ namespace Britannica.Infrastructure.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<int?>("FlightId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool?>("IsAvailable")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime?>("LastModified")

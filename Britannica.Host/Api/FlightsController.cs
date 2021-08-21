@@ -33,7 +33,6 @@ namespace Britannica.Host.Api
             CancellationToken cancellationToken) 
             => Ok(await _mediator.Send(new GetFlightRequest(id), cancellationToken));
 
-
         [HttpPost(nameof(CheckIn))]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult> CheckIn(

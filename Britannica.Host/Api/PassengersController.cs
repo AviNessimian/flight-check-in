@@ -33,12 +33,11 @@ namespace Britannica.Host.Api
             CancellationToken cancellationToken)
             => Ok(await _mediator.Send(new GetPassengerRequest(id), cancellationToken));
 
-
-        [HttpGet("/flights")]
+        [HttpGet(nameof(Flights))]
         [ProducesResponseType(typeof(PassengerEntity), StatusCodes.Status200OK)]
-        public async Task<ActionResult> GetFlights(
+        public async Task<ActionResult> Flights(
             [FromRoute, Required] int id,
             CancellationToken cancellationToken)
-            => Ok(await _mediator.Send(new GetPassengerRequest(id), cancellationToken));
+            => Ok(await _mediator.Send(new GetPassengerFlightRequest(id), cancellationToken));
     }
 }

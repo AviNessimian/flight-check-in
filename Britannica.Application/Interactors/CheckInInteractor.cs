@@ -36,16 +36,19 @@ namespace Britannica.Application.Interactors
     {
         private readonly ILogger<CheckInInteractor> _logger;
         private readonly IFlightRepository _flightRepository;
+        private readonly IAircraftRepository _aircraftRepository;
         private readonly IPassengerFlightRepository _passengerFlightRepository;
 
         public CheckInInteractor(
             ILogger<CheckInInteractor> logger,
             IFlightRepository flightRepository,
-            IPassengerFlightRepository passengerFlightRepository)
+            IPassengerFlightRepository passengerFlightRepository,
+            IAircraftRepository aircraftRepository)
         {
             _logger = logger;
             _flightRepository = flightRepository;
             _passengerFlightRepository = passengerFlightRepository;
+            _aircraftRepository = aircraftRepository;
         }
 
         public async Task<Unit> Handle(CheckInRequest request, CancellationToken cancellationToken)
@@ -53,13 +56,11 @@ namespace Britannica.Application.Interactors
             var flight = await _flightRepository.Get(request.FlightId, cancellationToken);
             _ = flight ?? throw new NotFoundException($"Flight {flight} not found.");
 
-            //BusinessRules:
-
             //1. Aircraft has a limited load weight 
             var requestBagsWeight = request.Baggages.Sum(x => x.Weight);
             ValidateAircraftWeightLimit(requestBagsWeight, flight.Aircraft.WeightLimit, flight.PassengerFlights);
 
-            // ToDo: 2. Aircraft’s seats are limited. Beware of overbooking.
+            //2. Aircraft’s seats are limited. Beware of overbooking.
 
             //3. Each passenger is allowed to check-in a limited number of bags
             var requestBaggagesCount = request.Baggages.Count();
@@ -70,20 +71,19 @@ namespace Britannica.Application.Interactors
 
             try
             {
-                var passengerFlight = _passengerFlightRepository.Get(request.FlightId, request.PassengerId, cancellationToken);
-
-                if (passengerFlight == null)
+                var seat = await _aircraftRepository.GetSeat(request.SeatId, cancellationToken);
+                if (seat == null)
                 {
-                    var newPassengerFlight = CreatePassengerFlightEntity(request);
-                    await _passengerFlightRepository.CheckIn(newPassengerFlight, cancellationToken);
+                    throw new NotFoundException($"Seat {request.SeatId} is not found.");
                 }
 
-
+                var newPassengerFlight = CreatePassengerFlightEntity(request);
+                await _passengerFlightRepository.CheckIn(newPassengerFlight, cancellationToken);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message, ex);
-                throw new AppBusinessRuleException(ex.Message);
+                throw new BusinessRuleException(ex.Message);
             }
 
             return await Task.FromResult(Unit.Value);
@@ -93,7 +93,7 @@ namespace Britannica.Application.Interactors
         {
             if (requestBaggagesCount > passengerBagsLimit)
             {
-                throw new AppBusinessRuleException($"The total weight of a passenger’s baggage" +
+                throw new BusinessRuleException($"The total weight of a passenger’s baggage" +
                     $" is limited to {passengerBagsLimit}");
             }
         }
@@ -111,7 +111,7 @@ namespace Britannica.Application.Interactors
 
             if ((correntBaggagesCount + requestBaggagesCount) > baggagesLimit)
             {
-                throw new AppBusinessRuleException($"Aircraft limited to {baggagesLimit} number of bags");
+                throw new BusinessRuleException($"Aircraft limited to {baggagesLimit} number of bags");
             }
         }
 
@@ -128,9 +128,10 @@ namespace Britannica.Application.Interactors
 
             if ((correntAircraftWeight + requestBagsWeight) > aircraftWeightLimit)
             {
-                throw new AppBusinessRuleException($"Aircraft has a limited load weight of {aircraftWeightLimit}");
+                throw new BusinessRuleException($"Aircraft has a limited load weight of {aircraftWeightLimit}");
             }
         }
+
         private static PassengerFlightEntity CreatePassengerFlightEntity(CheckInRequest request)
         {
             var newPassengerFlight = new PassengerFlightEntity

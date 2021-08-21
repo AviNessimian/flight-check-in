@@ -9,6 +9,7 @@ namespace Britannica.Infrastructure.Configurations
         public void Configure(EntityTypeBuilder<PassengerFlightSeatEntity> builder)
         {
             builder.HasKey(bc => new { bc.FlightId, bc.PassengerId });
+
         }
     }
 

@@ -21,5 +21,13 @@ namespace Britannica.Infrastructure.Repositories
                .AsNoTracking()
                .FirstOrDefaultAsync(x => x.Id == aircraftId, cancellationToken);
         }
+
+        public Task<SeatEntity> GetSeat(int seatId, CancellationToken cancellationToken)
+        {
+            return _applicationDb
+                     .Seats
+                     .AsNoTracking()
+                     .FirstOrDefaultAsync(x => x.Id == seatId, cancellationToken);
+        }
     }
 }

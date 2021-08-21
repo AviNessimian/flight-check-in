@@ -213,7 +213,7 @@ namespace Britannica.Infrastructure.Migrations
                     b.Property<int>("PassengerId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("SeatId")
+                    b.Property<int>("SeatId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("FlightId", "PassengerId");
@@ -234,6 +234,9 @@ namespace Britannica.Infrastructure.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<int?>("FlightId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool?>("IsAvailable")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime?>("LastModified")

@@ -10,7 +10,7 @@ namespace Britannica.Domain.Entities
         [JsonIgnore]
         public PassengerFlightEntity PassengerFlight { get; set; }
 
-        public int? SeatId { get; set; }
+        public int SeatId { get; set; }
     }
    
 }
