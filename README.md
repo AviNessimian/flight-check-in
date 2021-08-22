@@ -3,7 +3,7 @@ Design and implement a .Net (Core) Web API solution, which automates check-in in
 
 ##### [Go To Exercise README](/Flight-Assessment.pdf)
 ___
-![image](https://user-images.githubusercontent.com/29782774/130359271-945faa0b-44e0-429a-9dc8-4f2aabdb87fa.png)
+![image](https://user-images.githubusercontent.com/29782774/130361379-1cdab6ed-bed4-406d-a92c-839d12f2aa8c.png)
 ___
 
 
