@@ -69,22 +69,14 @@ namespace Britannica.Application.Interactors
             //4. The total weight of a passenger’s baggage is also limited.
             ValidateTotalPassengerWeightLimit(flight.Aircraft.PassengerBagsLimit, requestBaggagesCount);
 
-            try
+            var seat = await _aircraftRepository.GetSeat(request.SeatId, cancellationToken);
+            if (seat == null)
             {
-                var seat = await _aircraftRepository.GetSeat(request.SeatId, cancellationToken);
-                if (seat == null)
-                {
-                    throw new NotFoundException($"Seat {request.SeatId} is not found.");
-                }
+                throw new NotFoundException($"Seat {request.SeatId} is not found.");
+            }
 
-                var newPassengerFlight = CreatePassengerFlightEntity(request);
-                await _passengerFlightRepository.CheckIn(newPassengerFlight, cancellationToken);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message, ex);
-                throw new BusinessRuleException(ex.Message);
-            }
+            var newPassengerFlight = CreatePassengerFlightEntity(request);
+            await _passengerFlightRepository.CheckIn(newPassengerFlight, cancellationToken);
 
             return await Task.FromResult(Unit.Value);
         }
