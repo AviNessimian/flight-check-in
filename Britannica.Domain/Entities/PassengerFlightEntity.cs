@@ -18,5 +18,39 @@ namespace Britannica.Domain.Entities
 
         public PassengerFlightSeatEntity PassengerFlightSeat { get; set; }
         public ICollection<BaggageEntity> Baggages { get; set; }
+
+
+        public static class Factory
+        {
+            public static PassengerFlightEntity Create(
+                int flightId,
+                int passengerId,
+                int seatId,
+                decimal[] baggagesWeight)
+            {
+                var newPassengerFlight = new PassengerFlightEntity
+                {
+                    FlightId = flightId,
+                    PassengerId = passengerId,
+                    PassengerFlightSeat = new PassengerFlightSeatEntity
+                    {
+                        SeatId = seatId
+                    }
+                };
+
+                newPassengerFlight.Baggages = new List<BaggageEntity>();
+                foreach (var bagWeight in baggagesWeight)
+                {
+                    newPassengerFlight.Baggages.Add(new BaggageEntity
+                    {
+                        FlightId = flightId,
+                        PassengerId = passengerId,
+                        Weight = bagWeight,
+                    });
+                }
+
+                return newPassengerFlight;
+            }
+        }
     }
 }

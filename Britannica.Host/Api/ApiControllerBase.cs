@@ -8,7 +8,7 @@ namespace Britannica.Host.Api
     [ApiController]
     [ProducesResponseType(typeof(AppValidationProblemDetails), StatusCodes.Status422UnprocessableEntity)]
     [ProducesResponseType(typeof(AppNotFoundProblemDetails), StatusCodes.Status404NotFound)]
-    [ProducesResponseType(typeof(AppBusinessRuleProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(BusinessRuleProblemDetails), StatusCodes.Status400BadRequest)]
     public class ApiControllerBase : ControllerBase
     {
         protected IActionResult Json(object response) => new JsonResult(response);

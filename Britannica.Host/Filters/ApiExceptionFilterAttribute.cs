@@ -4,6 +4,7 @@ using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +25,8 @@ namespace Britannica.Host.Filters
                 { typeof(ValidationException), HandleValidationException },
                 { typeof(NotFoundException), HandleNotFoundException },
                 { typeof(BusinessRuleException), HandleAppBusinessRuleException },
+                { typeof(DbUpdateConcurrencyException), HandleDbUpdateConcurrencyException },
+
             };
         }
 
@@ -109,7 +112,7 @@ namespace Britannica.Host.Filters
         private void HandleAppBusinessRuleException(ExceptionContext context)
         {
             var exception = context.Exception as BusinessRuleException;
-            var details = new AppBusinessRuleProblemDetails
+            var details = new BusinessRuleProblemDetails
             {
                 Type = "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.1",
                 Message = context.Exception.Message,
@@ -122,6 +125,41 @@ namespace Britannica.Host.Filters
 
             context.ExceptionHandled = true;
         }
+
+        private void HandleDbUpdateConcurrencyException(ExceptionContext context)
+        {
+            var exception = context.Exception as DbUpdateConcurrencyException;
+            var details = new UpdateConcurrencyProblemDetails
+            {
+                Type = "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.1",
+                Message = context.Exception.Message,
+            };
+
+            var exceptionEntry = exception.Entries.Single();
+            var databaseEntry = exceptionEntry.GetDatabaseValues();
+            if (databaseEntry == null)
+            {
+                details.Description = "Unable to save changes. The Seat was deleted by another user.";
+            }
+            else
+            {
+                details.EntityType = databaseEntry.EntityType.DisplayName();
+                details.Description = $"The record you attempted to edit " +
+                    $"was modified by another user after you got the original value. The " +
+                   $"edit operation was canceled and the current values in the database " +
+                   $"have been displayed. If you still want to edit this record, click " +
+                   $"the Save button again. Otherwise click the Back to List hyperlink.";
+            }
+
+            context.Result = new ObjectResult(details)
+            {
+                StatusCode = StatusCodes.Status400BadRequest
+            };
+
+            context.ExceptionHandled = true;
+        }
+
+
 
         private void HandleUnknownException(ExceptionContext context)
         {

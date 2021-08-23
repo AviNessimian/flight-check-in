@@ -61,6 +61,12 @@ namespace Britannica.Application.Interactors
             ValidateAircraftWeightLimit(requestBagsWeight, flight.Aircraft.WeightLimit, flight.PassengerFlights);
 
             //2. Aircraft’s seats are limited. Beware of overbooking.
+            var seat = await _aircraftRepository.GetSeat(request.SeatId, cancellationToken);
+            _ = flight ?? throw new NotFoundException($"Seat {request.SeatId} is not found.");
+            if (!(seat.IsAvailable ?? true))
+            {
+                throw new BusinessRuleException($"Seat {seat.Id} is not available");
+            }
 
             //3. Each passenger is allowed to check-in a limited number of bags
             var requestBaggagesCount = request.Baggages.Count();
@@ -69,13 +75,12 @@ namespace Britannica.Application.Interactors
             //4. The total weight of a passenger’s baggage is also limited.
             ValidateTotalPassengerWeightLimit(flight.Aircraft.PassengerBagsLimit, requestBaggagesCount);
 
-            var seat = await _aircraftRepository.GetSeat(request.SeatId, cancellationToken);
-            if (seat == null)
-            {
-                throw new NotFoundException($"Seat {request.SeatId} is not found.");
-            }
+            var newPassengerFlight = PassengerFlightEntity.Factory.Create(
+                flightId: request.FlightId,
+                passengerId: request.PassengerId,
+                seatId: request.SeatId,
+                request.Baggages.Select(x => x.Weight).ToArray());
 
-            var newPassengerFlight = CreatePassengerFlightEntity(request);
             await _passengerFlightRepository.CheckIn(newPassengerFlight, cancellationToken);
 
             return await Task.FromResult(Unit.Value);
@@ -122,32 +127,6 @@ namespace Britannica.Application.Interactors
             {
                 throw new BusinessRuleException($"Aircraft has a limited load weight of {aircraftWeightLimit}");
             }
-        }
-
-        private static PassengerFlightEntity CreatePassengerFlightEntity(CheckInRequest request)
-        {
-            var newPassengerFlight = new PassengerFlightEntity
-            {
-                FlightId = request.FlightId,
-                PassengerId = request.PassengerId,
-                PassengerFlightSeat = new PassengerFlightSeatEntity
-                {
-                    SeatId = request.SeatId
-                }
-            };
-
-            newPassengerFlight.Baggages = new List<BaggageEntity>();
-            foreach (var bag in request.Baggages)
-            {
-                newPassengerFlight.Baggages.Add(new BaggageEntity
-                {
-                    FlightId = request.FlightId,
-                    PassengerId = request.PassengerId,
-                    Weight = bag.Weight,
-                });
-            }
-
-            return newPassengerFlight;
         }
     }
 }
