@@ -117,7 +117,11 @@ namespace Britannica.Host.Filters
                 Type = "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.1",
                 Message = context.Exception.Message,
             };
+            BadRequest(context, details);
+        }
 
+        private static void BadRequest(ExceptionContext context, BusinessRuleProblemDetails details)
+        {
             context.Result = new ObjectResult(details)
             {
                 StatusCode = StatusCodes.Status400BadRequest
@@ -158,8 +162,6 @@ namespace Britannica.Host.Filters
 
             context.ExceptionHandled = true;
         }
-
-
 
         private void HandleUnknownException(ExceptionContext context)
         {

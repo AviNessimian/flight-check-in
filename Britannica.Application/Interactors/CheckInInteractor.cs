@@ -62,7 +62,7 @@ namespace Britannica.Application.Interactors
 
             //2. Aircraft’s seats are limited. Beware of overbooking.
             var seat = await _aircraftRepository.GetSeat(request.SeatId, cancellationToken);
-            _ = flight ?? throw new NotFoundException($"Seat {request.SeatId} is not found.");
+            _ = seat ?? throw new NotFoundException($"Seat {request.SeatId} is not found.");
             if (!(seat.IsAvailable ?? true))
             {
                 throw new BusinessRuleException($"Seat {seat.Id} is not available");
