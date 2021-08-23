@@ -17,7 +17,7 @@ namespace Britannica.Infrastructure.Repositories
             _applicationDb = applicationDb;
         }
 
-        public Task<PassengerEntity> GetPassenger(int id, CancellationToken cancellationToken)
+        public Task<PassengerEntity> Get(int id, CancellationToken cancellationToken)
         {
             return _applicationDb
                 .Passengers
@@ -37,6 +37,23 @@ namespace Britannica.Infrastructure.Repositories
                 .AsNoTracking();
 
             return await passengersQuery.PaginateAsync(pageIndex, totalPages, cancellationToken);
+        }
+
+        public async Task<bool> CheckIn(PassengerFlightEntity newPassengerFlight, CancellationToken cancellationToken)
+        {
+            var seat = await _applicationDb.Seats.SingleAsync(x => x.Id == newPassengerFlight.SeatId);
+            seat.IsAvailable = false;
+            _applicationDb.PassengerFlights.Add(newPassengerFlight);
+            return await _applicationDb.SaveChangesAsync(cancellationToken) > 0;
+        }
+
+        public Task<PassengerFlightEntity> Get(int flightId, int passengerId, CancellationToken cancellationToken)
+        {
+            return _applicationDb
+                .PassengerFlights
+                .Include(x => x.Baggages)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.FlightId == flightId && x.PassengerId == passengerId, cancellationToken);
         }
     }
 }

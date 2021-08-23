@@ -70,7 +70,7 @@ namespace Britannica.Infrastructure.Migrations
                 {
                     FlightId = table.Column<int>(nullable: false),
                     PassengerId = table.Column<int>(nullable: false),
-                    Id = table.Column<int>(nullable: false)
+                    SeatId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -132,25 +132,6 @@ namespace Britannica.Infrastructure.Migrations
                     table.PrimaryKey("PK_BaggageEntity", x => x.Id);
                     table.ForeignKey(
                         name: "FK_BaggageEntity_PassengerFlights_FlightId_PassengerId",
-                        columns: x => new { x.FlightId, x.PassengerId },
-                        principalTable: "PassengerFlights",
-                        principalColumns: new[] { "FlightId", "PassengerId" },
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PassengerFlightSeatEntity",
-                columns: table => new
-                {
-                    FlightId = table.Column<int>(nullable: false),
-                    PassengerId = table.Column<int>(nullable: false),
-                    SeatId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PassengerFlightSeatEntity", x => new { x.FlightId, x.PassengerId });
-                    table.ForeignKey(
-                        name: "FK_PassengerFlightSeatEntity_PassengerFlights_FlightId_PassengerId",
                         columns: x => new { x.FlightId, x.PassengerId },
                         principalTable: "PassengerFlights",
                         principalColumns: new[] { "FlightId", "PassengerId" },
@@ -253,9 +234,6 @@ namespace Britannica.Infrastructure.Migrations
         {
             migrationBuilder.DropTable(
                 name: "BaggageEntity");
-
-            migrationBuilder.DropTable(
-                name: "PassengerFlightSeatEntity");
 
             migrationBuilder.DropTable(
                 name: "Seats");

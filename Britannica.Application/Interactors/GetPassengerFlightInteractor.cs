@@ -1,4 +1,5 @@
 ﻿using Britannica.Application.Contracts;
+using Britannica.Application.Exceptions;
 using Britannica.Domain.Entities;
 using MediatR;
 using System.Threading;
@@ -7,31 +8,33 @@ using System.Threading.Tasks;
 namespace Britannica.Application.Interactors
 {
 
-    public class GetPassengerFlightRequest : IRequest<PassengerEntity>
+    public class GetPassengerFlightRequest : IRequest<PassengerFlightEntity>
     {
-        public GetPassengerFlightRequest(int id)
+        public GetPassengerFlightRequest(int flightId, int passengerId)
         {
-            Id = id;
+            FlightId = flightId;
+            PassengerId = passengerId;
         }
-        public int Id { get; }
+        public int FlightId { get; set; }
+
+        public int PassengerId { get; set; }
+
     }
 
-    internal class GetPassengerFlightInteractor : IRequestHandler<GetPassengerRequest, PassengerEntity>
+    internal class GetPassengerFlightInteractor : IRequestHandler<GetPassengerFlightRequest, PassengerFlightEntity>
     {
-        private readonly IPassengerFlightRepository _passengerFlightRepository;
+        private readonly IPassengerRepository _passengerRepository;
 
-        public GetPassengerFlightInteractor(IPassengerFlightRepository passengerFlightRepository)
+        public GetPassengerFlightInteractor(IPassengerRepository passengerRepository)
         {
-            _passengerFlightRepository = passengerFlightRepository;
+            _passengerRepository = passengerRepository;
         }
 
-        public async Task<PassengerEntity> Handle(GetPassengerRequest request, CancellationToken cancellationToken)
+        public async Task<PassengerFlightEntity> Handle(GetPassengerFlightRequest request, CancellationToken cancellationToken)
         {
-            //var passenger = await _passengerFlightRepository.Get(request.Id, cancellationToken);
-            //_ = passenger ?? throw new NotFoundException($"Passenger {passenger.Id} Not Found");
-            //return passenger;
-
-            return null;
+            var passengerFlights = await _passengerRepository.Get(request.FlightId, request.PassengerId, cancellationToken);
+            _ = passengerFlights ?? throw new NotFoundException($"Passenger Flight Not Found");
+            return passengerFlights;
         }
     }
 }

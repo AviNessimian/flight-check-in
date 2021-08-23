@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Britannica.Application.Interactors
 {
-    public class CheckInRequest : IRequest
+    public class CheckInRequest : IRequest<PassengerFlightEntity>
     {
         public CheckInRequest() { }
         public CheckInRequest(int flightId, int passangerId, int seatId, List<Baggage> baggages)
@@ -32,26 +32,26 @@ namespace Britannica.Application.Interactors
         }
     }
 
-    internal class CheckInInteractor : IRequestHandler<CheckInRequest>
+    internal class CheckInInteractor : IRequestHandler<CheckInRequest, PassengerFlightEntity>
     {
         private readonly ILogger<CheckInInteractor> _logger;
         private readonly IFlightRepository _flightRepository;
         private readonly IAircraftRepository _aircraftRepository;
-        private readonly IPassengerFlightRepository _passengerFlightRepository;
+        private readonly IPassengerRepository _passengerRepository;
 
         public CheckInInteractor(
             ILogger<CheckInInteractor> logger,
             IFlightRepository flightRepository,
-            IPassengerFlightRepository passengerFlightRepository,
-            IAircraftRepository aircraftRepository)
+            IAircraftRepository aircraftRepository,
+            IPassengerRepository passengerRepository)
         {
             _logger = logger;
             _flightRepository = flightRepository;
-            _passengerFlightRepository = passengerFlightRepository;
             _aircraftRepository = aircraftRepository;
+            _passengerRepository = passengerRepository;
         }
 
-        public async Task<Unit> Handle(CheckInRequest request, CancellationToken cancellationToken)
+        public async Task<PassengerFlightEntity> Handle(CheckInRequest request, CancellationToken cancellationToken)
         {
             var flight = await _flightRepository.Get(request.FlightId, cancellationToken);
             _ = flight ?? throw new NotFoundException($"Flight {flight} not found.");
@@ -81,9 +81,9 @@ namespace Britannica.Application.Interactors
                 seatId: request.SeatId,
                 request.Baggages.Select(x => x.Weight).ToArray());
 
-            await _passengerFlightRepository.CheckIn(newPassengerFlight, cancellationToken);
+            await _passengerRepository.CheckIn(newPassengerFlight, cancellationToken);
 
-            return await Task.FromResult(Unit.Value);
+            return newPassengerFlight;
         }
 
         private static void ValidateTotalPassengerWeightLimit(int passengerBagsLimit, int requestBaggagesCount)

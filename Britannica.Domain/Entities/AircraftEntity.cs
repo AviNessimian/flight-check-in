@@ -8,6 +8,7 @@ namespace Britannica.Domain.Entities
     public class AircraftEntity : AuditableEntity
     {
         public int Id { get; set; }
+
         public decimal WeightLimit { get; set; }
         //public string WeightUnits { get; set; }
         public ushort BaggagesLimit { get; set; }

@@ -25,12 +25,10 @@ namespace Britannica.Infrastructure.Configurations
                 .WithOne(b => b.PassengerFlight)
                 .HasForeignKey(bc => new { bc.FlightId, bc.PassengerId });
 
-            builder
-             .HasOne(b => b.PassengerFlightSeat)
-             .WithOne(b => b.PassengerFlight)
-             .HasForeignKey<PassengerFlightSeatEntity>(bc => new { bc.FlightId, bc.PassengerId });
+            //builder
+            // .HasOne(b => b.PassengerFlightSeat)
+            // .WithOne(b => b.PassengerFlight)
+            // .HasForeignKey<PassengerFlightSeatEntity>(bc => new { bc.FlightIdRef, bc.PassengerIdRef });
         }
     }
-
-
 }

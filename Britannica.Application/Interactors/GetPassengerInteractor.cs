@@ -28,7 +28,7 @@ namespace Britannica.Application.Interactors
 
         public async Task<PassengerEntity> Handle(GetPassengerRequest request, CancellationToken cancellationToken)
         {
-            var passenger = await _passengerRepository.GetPassenger(request.Id, cancellationToken);
+            var passenger = await _passengerRepository.Get(request.Id, cancellationToken);
             _ = passenger ?? throw new NotFoundException($"Passenger {passenger.Id} Not Found");
             return passenger;
         }

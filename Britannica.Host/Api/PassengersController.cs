@@ -22,7 +22,7 @@ namespace Britannica.Host.Api
         [ProducesResponseType(typeof(List<PassengerEntity>), StatusCodes.Status200OK)]
         public async Task<ActionResult> Get(
             [FromQuery, Required] int pageIndex,
-            [FromQuery, Required] int totalPages, 
+            [FromQuery, Required] int totalPages,
             CancellationToken cancellationToken)
              => Ok(await _mediator.Send(new GetPassengersRequest(pageIndex, totalPages), cancellationToken));
 
@@ -36,8 +36,25 @@ namespace Britannica.Host.Api
         [HttpGet(nameof(Flights))]
         [ProducesResponseType(typeof(PassengerEntity), StatusCodes.Status200OK)]
         public async Task<ActionResult> Flights(
-            [FromRoute, Required] int id,
+            [FromQuery, Required] int flightId,
+            [FromQuery, Required] int passengerId,
             CancellationToken cancellationToken)
-            => Ok(await _mediator.Send(new GetPassengerFlightRequest(id), cancellationToken));
+            => Ok(await _mediator.Send(new GetPassengerFlightRequest(flightId, passengerId), cancellationToken));
+
+        [HttpPost(nameof(CheckIn))]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult> CheckIn(
+            [FromBody] CheckInRequest request,
+            CancellationToken cancellationToken)
+        {
+            var createdEntity = await _mediator.Send(request, cancellationToken);
+            var queryParams = new
+            {
+                createdEntity.FlightId,
+                createdEntity.PassengerId
+            };
+            var fullCreatedEntityUrl = this.Url.Action(nameof(Flights), "Passengers", queryParams, Request.Scheme);
+            return Created(fullCreatedEntityUrl, createdEntity);
+        }
     }
 }

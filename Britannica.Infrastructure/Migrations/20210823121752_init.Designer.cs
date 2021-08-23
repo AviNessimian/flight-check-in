@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Britannica.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210822153346_init")]
+    [Migration("20210823121752_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -197,7 +197,7 @@ namespace Britannica.Infrastructure.Migrations
                     b.Property<int>("PassengerId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("Id")
+                    b.Property<int>("SeatId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("FlightId", "PassengerId");
@@ -205,22 +205,6 @@ namespace Britannica.Infrastructure.Migrations
                     b.HasIndex("PassengerId");
 
                     b.ToTable("PassengerFlights");
-                });
-
-            modelBuilder.Entity("Britannica.Domain.Entities.PassengerFlightSeatEntity", b =>
-                {
-                    b.Property<int>("FlightId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("PassengerId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("SeatId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("FlightId", "PassengerId");
-
-                    b.ToTable("PassengerFlightSeatEntity");
                 });
 
             modelBuilder.Entity("Britannica.Domain.Entities.SeatEntity", b =>
@@ -364,15 +348,6 @@ namespace Britannica.Infrastructure.Migrations
                     b.HasOne("Britannica.Domain.Entities.PassengerEntity", "Passenger")
                         .WithMany("PassengerFlights")
                         .HasForeignKey("PassengerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Britannica.Domain.Entities.PassengerFlightSeatEntity", b =>
-                {
-                    b.HasOne("Britannica.Domain.Entities.PassengerFlightEntity", "PassengerFlight")
-                        .WithOne("PassengerFlightSeat")
-                        .HasForeignKey("Britannica.Domain.Entities.PassengerFlightSeatEntity", "FlightId", "PassengerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
