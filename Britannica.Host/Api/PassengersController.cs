@@ -33,16 +33,15 @@ namespace Britannica.Host.Api
             CancellationToken cancellationToken)
             => Ok(await _mediator.Send(new GetPassengerRequest(id), cancellationToken));
 
-        [HttpGet(nameof(Flights))]
+        [HttpGet(nameof(Flights) + "/{id}")]
         [ProducesResponseType(typeof(PassengerEntity), StatusCodes.Status200OK)]
         public async Task<ActionResult> Flights(
-            [FromQuery, Required] int flightId,
-            [FromQuery, Required] int passengerId,
+            [FromRoute, Required] int id,
             CancellationToken cancellationToken)
-            => Ok(await _mediator.Send(new GetPassengerFlightRequest(flightId, passengerId), cancellationToken));
+            => Ok(await _mediator.Send(new GetPassengerFlightRequest(id), cancellationToken));
 
         [HttpPost(nameof(CheckIn))]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(CreatedResult), StatusCodes.Status201Created)]
         public async Task<ActionResult> CheckIn(
             [FromBody] CheckInRequest request,
             CancellationToken cancellationToken)
@@ -50,8 +49,7 @@ namespace Britannica.Host.Api
             var createdEntity = await _mediator.Send(request, cancellationToken);
             var queryParams = new
             {
-                createdEntity.FlightId,
-                createdEntity.PassengerId
+                createdEntity.Id
             };
             var fullCreatedEntityUrl = this.Url.Action(nameof(Flights), "Passengers", queryParams, Request.Scheme);
             return Created(fullCreatedEntityUrl, createdEntity);

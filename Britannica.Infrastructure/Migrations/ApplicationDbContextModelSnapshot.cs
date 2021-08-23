@@ -72,13 +72,10 @@ namespace Britannica.Infrastructure.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("FlightId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("PassengerId")
+                    b.Property<int>("PassengerFlightRef")
                         .HasColumnType("INTEGER");
 
                     b.Property<decimal>("Weight")
@@ -86,7 +83,7 @@ namespace Britannica.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FlightId", "PassengerId");
+                    b.HasIndex("PassengerFlightRef");
 
                     b.ToTable("BaggageEntity");
                 });
@@ -189,8 +186,18 @@ namespace Britannica.Infrastructure.Migrations
 
             modelBuilder.Entity("Britannica.Domain.Entities.PassengerFlightEntity", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("FlightId")
                         .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("PassengerId")
                         .HasColumnType("INTEGER");
@@ -198,7 +205,9 @@ namespace Britannica.Infrastructure.Migrations
                     b.Property<int>("SeatId")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("FlightId", "PassengerId");
+                    b.HasKey("Id");
+
+                    b.HasAlternateKey("FlightId", "PassengerId", "SeatId");
 
                     b.HasIndex("PassengerId");
 
@@ -330,7 +339,7 @@ namespace Britannica.Infrastructure.Migrations
                 {
                     b.HasOne("Britannica.Domain.Entities.PassengerFlightEntity", "PassengerFlight")
                         .WithMany("Baggages")
-                        .HasForeignKey("FlightId", "PassengerId")
+                        .HasForeignKey("PassengerFlightRef")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

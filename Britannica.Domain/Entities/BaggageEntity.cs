@@ -6,11 +6,7 @@ namespace Britannica.Domain.Entities
     public class BaggageEntity : AuditableEntity
     {
         public int Id { get; set; }
-
-        [JsonIgnore]
-        public int FlightId { get; set; }
-        [JsonIgnore]
-        public int PassengerId { get; set; }
+        public int PassengerFlightRef { get; set; }
 
         public decimal Weight { get; set; }
         //public string WeightUnits { get; set; }

@@ -8,7 +8,12 @@ namespace Britannica.Infrastructure.Configurations
     {
         public void Configure(EntityTypeBuilder<PassengerFlightEntity> builder)
         {
-            builder.HasKey(bc => new { bc.FlightId, bc.PassengerId });
+            builder.HasKey(e => e.Id);
+            builder.Property(e => e.Id).ValueGeneratedOnAdd();
+
+            builder.HasAlternateKey(bc => new { bc.FlightId, bc.PassengerId, bc.SeatId });
+
+            builder.Ignore(c => c.BaggagesCount);
 
             builder
                 .HasOne(bc => bc.Flight)
@@ -23,7 +28,7 @@ namespace Britannica.Infrastructure.Configurations
             builder
                 .HasMany(b => b.Baggages)
                 .WithOne(b => b.PassengerFlight)
-                .HasForeignKey(bc => new { bc.FlightId, bc.PassengerId });
+                .HasForeignKey(bc => new { bc.PassengerFlightRef });
 
             //builder
             // .HasOne(b => b.PassengerFlightSeat)

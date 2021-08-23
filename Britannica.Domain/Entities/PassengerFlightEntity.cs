@@ -1,11 +1,13 @@
 ﻿using Britannica.Domain.Bases;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json.Serialization;
 
 namespace Britannica.Domain.Entities
 {
-    public class PassengerFlightEntity
+    public class PassengerFlightEntity : AuditableEntity
     {
+        public int Id { get; set; }
 
         public int FlightId { get; set; }
 
@@ -20,6 +22,8 @@ namespace Britannica.Domain.Entities
         //public PassengerFlightSeatEntity PassengerFlightSeat { get; set; }
         public int SeatId { get; set; }
         public ICollection<BaggageEntity> Baggages { get; set; }
+
+        public int BaggagesCount => Baggages?.Count() ?? 0;
 
         public static class Factory
         {
@@ -41,8 +45,6 @@ namespace Britannica.Domain.Entities
                 {
                     newPassengerFlight.Baggages.Add(new BaggageEntity
                     {
-                        FlightId = flightId,
-                        PassengerId = passengerId,
                         Weight = bagWeight,
                     });
                 }

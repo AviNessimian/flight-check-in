@@ -6,6 +6,7 @@ namespace Britannica.Domain.Entities
     public class SeatEntity : AuditableEntity
     {
         public int Id { get; set; }
+
         [JsonIgnore]
         public int RowVersion { get; set; }
 

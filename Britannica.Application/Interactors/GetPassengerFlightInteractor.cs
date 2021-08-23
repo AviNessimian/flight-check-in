@@ -10,15 +10,11 @@ namespace Britannica.Application.Interactors
 
     public class GetPassengerFlightRequest : IRequest<PassengerFlightEntity>
     {
-        public GetPassengerFlightRequest(int flightId, int passengerId)
+        public GetPassengerFlightRequest(int id)
         {
-            FlightId = flightId;
-            PassengerId = passengerId;
+            Id = id;
         }
-        public int FlightId { get; set; }
-
-        public int PassengerId { get; set; }
-
+        public int Id { get; set; }
     }
 
     internal class GetPassengerFlightInteractor : IRequestHandler<GetPassengerFlightRequest, PassengerFlightEntity>
@@ -32,7 +28,7 @@ namespace Britannica.Application.Interactors
 
         public async Task<PassengerFlightEntity> Handle(GetPassengerFlightRequest request, CancellationToken cancellationToken)
         {
-            var passengerFlights = await _passengerRepository.Get(request.FlightId, request.PassengerId, cancellationToken);
+            var passengerFlights = await _passengerRepository.GetFlight(request.Id, cancellationToken);
             _ = passengerFlights ?? throw new NotFoundException($"Passenger Flight Not Found");
             return passengerFlights;
         }

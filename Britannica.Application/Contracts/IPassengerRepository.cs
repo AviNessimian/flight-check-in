@@ -9,8 +9,7 @@ namespace Britannica.Application.Contracts
     {
         Task<PaginatedResponse<PassengerEntity>> GetPassengers(int pageIndex, int totalPages, CancellationToken cancellationToken);
         Task<PassengerEntity> Get(int id, CancellationToken cancellationToken);
-
+        Task<PassengerFlightEntity> GetFlight(int id, CancellationToken cancellationToken);
         Task<bool> CheckIn(PassengerFlightEntity newPassengerFlight, CancellationToken cancellationToken);
-        Task<PassengerFlightEntity> Get(int flightId, int passengerId, CancellationToken cancellationToken);
     }
 }

@@ -21,10 +21,11 @@ namespace Britannica.Infrastructure.Repositories
 
         public async Task<FlightEntity> Get(int id, CancellationToken cancellationToken)
         {
-            var flight = await _applicationDb.Flights
+            var flight = await _applicationDb
+                .Flights
+                .AsNoTracking()
                 .Include(x => x.Aircraft)
                 .Include(x => x.PassengerFlights)
-                .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
 
             flight.Aircraft.Seats = await GetSeats(flight.Aircraft.Id, cancellationToken);
@@ -38,9 +39,9 @@ namespace Britannica.Infrastructure.Repositories
         {
             var flightsQuery = _applicationDb
                 .Flights
+                .AsNoTracking()
                 .Include(x => x.Aircraft)
-                .Include(x => x.PassengerFlights)
-                .AsNoTracking();
+                .Include(x => x.PassengerFlights);
 
             var paginatedFlights = await flightsQuery.PaginateAsync(pageIndex, totalPages, cancellationToken);
             foreach (var flight in paginatedFlights)
@@ -54,6 +55,7 @@ namespace Britannica.Infrastructure.Repositories
         {
             return _applicationDb
                    .Seats
+                   .AsNoTracking()
                    .Where(x => x.AircraftRef == aircraftId)
                    .ToListAsync(cancellationToken);
         }

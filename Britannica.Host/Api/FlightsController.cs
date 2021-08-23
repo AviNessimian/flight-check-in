@@ -32,6 +32,5 @@ namespace Britannica.Host.Api
             [FromRoute, Required] int id,
             CancellationToken cancellationToken)
             => Ok(await _mediator.Send(new GetFlightRequest(id), cancellationToken));
-
     }
 }

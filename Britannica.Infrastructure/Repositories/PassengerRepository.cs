@@ -21,8 +21,8 @@ namespace Britannica.Infrastructure.Repositories
         {
             return _applicationDb
                 .Passengers
-                .Include(x => x.PassengerFlights)
                 .AsNoTracking()
+                .Include(x => x.PassengerFlights)
                 .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
         }
 
@@ -33,8 +33,8 @@ namespace Britannica.Infrastructure.Repositories
         {
             var passengersQuery = _applicationDb
                 .Passengers
-                .Include(x => x.PassengerFlights)
-                .AsNoTracking();
+                .AsNoTracking()
+                .Include(x => x.PassengerFlights);
 
             return await passengersQuery.PaginateAsync(pageIndex, totalPages, cancellationToken);
         }
@@ -47,13 +47,14 @@ namespace Britannica.Infrastructure.Repositories
             return await _applicationDb.SaveChangesAsync(cancellationToken) > 0;
         }
 
-        public Task<PassengerFlightEntity> Get(int flightId, int passengerId, CancellationToken cancellationToken)
+        public Task<PassengerFlightEntity> GetFlight(int id, CancellationToken cancellationToken)
         {
             return _applicationDb
                 .PassengerFlights
-                .Include(x => x.Baggages)
                 .AsNoTracking()
-                .FirstOrDefaultAsync(x => x.FlightId == flightId && x.PassengerId == passengerId, cancellationToken);
+                .Include(x => x.Baggages)
+                .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
         }
     }
+
 }

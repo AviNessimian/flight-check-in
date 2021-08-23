@@ -3,7 +3,6 @@ using Britannica.Application.Exceptions;
 using Britannica.Domain.Entities;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -57,7 +56,7 @@ namespace Britannica.Application.Interactors
             _ = flight ?? throw new NotFoundException($"Flight {flight} not found.");
 
             //1. Aircraft has a limited load weight 
-            var requestBagsWeight = request.Baggages.Sum(x => x.Weight);
+            var requestBagsWeight = request.Baggages?.Sum(x => x.Weight) ?? 0;
             ValidateAircraftWeightLimit(requestBagsWeight, flight.Aircraft.WeightLimit, flight.PassengerFlights);
 
             //2. Aircraft’s seats are limited. Beware of overbooking.
@@ -69,7 +68,7 @@ namespace Britannica.Application.Interactors
             }
 
             //3. Each passenger is allowed to check-in a limited number of bags
-            var requestBaggagesCount = request.Baggages.Count();
+            var requestBaggagesCount = request.Baggages?.Count() ?? 0;
             ValidateAircraftNumberOfBagsLimit(requestBaggagesCount, flight.Aircraft.BaggagesLimit, flight.PassengerFlights);
 
             //4. The total weight of a passenger’s baggage is also limited.
@@ -103,7 +102,7 @@ namespace Britannica.Application.Interactors
             var correntBaggagesCount = 0;
             foreach (var passengerFlight in passengerFlights)
             {
-                correntBaggagesCount += passengerFlight.Baggages.Count();
+                correntBaggagesCount += passengerFlight.BaggagesCount;
             }
 
             if ((correntBaggagesCount + requestBaggagesCount) > baggagesLimit)
@@ -120,7 +119,7 @@ namespace Britannica.Application.Interactors
             decimal correntAircraftWeight = 0;
             foreach (var passengerFlight in passengerFlights)
             {
-                correntAircraftWeight += passengerFlight.Baggages.Sum(x => x.Weight);
+                correntAircraftWeight += passengerFlight.Baggages?.Sum(x => x.Weight) ?? 0;
             }
 
             if ((correntAircraftWeight + requestBagsWeight) > aircraftWeightLimit)

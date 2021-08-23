@@ -68,13 +68,18 @@ namespace Britannica.Infrastructure.Migrations
                 name: "PassengerFlights",
                 columns: table => new
                 {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Created = table.Column<DateTime>(nullable: false),
+                    LastModified = table.Column<DateTime>(nullable: true),
                     FlightId = table.Column<int>(nullable: false),
                     PassengerId = table.Column<int>(nullable: false),
                     SeatId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PassengerFlights", x => new { x.FlightId, x.PassengerId });
+                    table.PrimaryKey("PK_PassengerFlights", x => x.Id);
+                    table.UniqueConstraint("AK_PassengerFlights_FlightId_PassengerId_SeatId", x => new { x.FlightId, x.PassengerId, x.SeatId });
                     table.ForeignKey(
                         name: "FK_PassengerFlights_Flights_FlightId",
                         column: x => x.FlightId,
@@ -123,18 +128,17 @@ namespace Britannica.Infrastructure.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Created = table.Column<DateTime>(nullable: false),
                     LastModified = table.Column<DateTime>(nullable: true),
-                    FlightId = table.Column<int>(nullable: false),
-                    PassengerId = table.Column<int>(nullable: false),
+                    PassengerFlightRef = table.Column<int>(nullable: false),
                     Weight = table.Column<decimal>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_BaggageEntity", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_BaggageEntity_PassengerFlights_FlightId_PassengerId",
-                        columns: x => new { x.FlightId, x.PassengerId },
+                        name: "FK_BaggageEntity_PassengerFlights_PassengerFlightRef",
+                        column: x => x.PassengerFlightRef,
                         principalTable: "PassengerFlights",
-                        principalColumns: new[] { "FlightId", "PassengerId" },
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -215,9 +219,9 @@ namespace Britannica.Infrastructure.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_BaggageEntity_FlightId_PassengerId",
+                name: "IX_BaggageEntity_PassengerFlightRef",
                 table: "BaggageEntity",
-                columns: new[] { "FlightId", "PassengerId" });
+                column: "PassengerFlightRef");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PassengerFlights_PassengerId",
