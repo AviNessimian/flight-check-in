@@ -1,10 +1,11 @@
 ﻿using Britannica.Application.Contracts;
-using Britannica.Application.Exceptions;
 using Britannica.Domain.Entities;
+using Britannica.Domain.Exceptions;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -25,10 +26,16 @@ namespace Britannica.Application.Interactors
         public int SeatId { get; set; }
         public List<Baggage> Baggages { get; set; }
 
-        public class Baggage
-        {
-            public decimal Weight { get; set; }
-        }
+        [JsonIgnore]
+        public int BaggagesCount => Baggages?.Count() ?? 0;
+
+        [JsonIgnore]
+        public decimal BaggageTotalWeight => Baggages?.Sum(x => x.Weight) ?? 0;
+
+        [JsonIgnore]
+        public decimal[] BaggageWeights => Baggages.Select(x => x.Weight).ToArray();
+
+        public class Baggage { public decimal Weight { get; set; } }
     }
 
     internal class CheckInInteractor : IRequestHandler<CheckInRequest, PassengerFlightEntity>
@@ -56,76 +63,28 @@ namespace Britannica.Application.Interactors
             _ = flight ?? throw new NotFoundException($"Flight {flight} not found.");
 
             //1. Aircraft has a limited load weight 
-            var requestBagsWeight = request.Baggages?.Sum(x => x.Weight) ?? 0;
-            ValidateAircraftWeightLimit(requestBagsWeight, flight.Aircraft.WeightLimit, flight.PassengerFlights);
+            flight.ValidateAircraftWeightLimit(request.BaggageTotalWeight, flight.PassengerFlights);
 
             //2. Aircraft’s seats are limited. Beware of overbooking.
             var seat = await _aircraftRepository.GetSeat(request.SeatId, cancellationToken);
             _ = seat ?? throw new NotFoundException($"Seat {request.SeatId} is not found.");
-            if (!(seat.IsAvailable ?? true))
-            {
-                throw new BusinessRuleException($"Seat {seat.Id} is not available");
-            }
+            seat.ValidateSeatAvailability();
 
             //3. Each passenger is allowed to check-in a limited number of bags
-            var requestBaggagesCount = request.Baggages?.Count() ?? 0;
-            ValidateAircraftNumberOfBagsLimit(requestBaggagesCount, flight.Aircraft.BaggagesLimit, flight.PassengerFlights);
+            flight.ValidateAircraftNumberOfBagsLimit(request.BaggagesCount, flight.PassengerFlights);
 
             //4. The total weight of a passenger’s baggage is also limited.
-            ValidateTotalPassengerWeightLimit(flight.Aircraft.PassengerBagsLimit, requestBaggagesCount);
+            flight.ValidateTotalPassengerWeightLimit(request.BaggagesCount);
 
             var newPassengerFlight = PassengerFlightEntity.Factory.Create(
                 flightId: request.FlightId,
                 passengerId: request.PassengerId,
                 seatId: request.SeatId,
-                request.Baggages.Select(x => x.Weight).ToArray());
+                request.BaggageWeights);
 
             await _passengerRepository.CheckIn(newPassengerFlight, cancellationToken);
 
             return newPassengerFlight;
-        }
-
-        private static void ValidateTotalPassengerWeightLimit(int passengerBagsLimit, int requestBaggagesCount)
-        {
-            if (requestBaggagesCount > passengerBagsLimit)
-            {
-                throw new BusinessRuleException($"The total weight of a passenger’s baggage" +
-                    $" is limited to {passengerBagsLimit}");
-            }
-        }
-
-        private static void ValidateAircraftNumberOfBagsLimit(
-            int requestBaggagesCount,
-            int baggagesLimit,
-            ICollection<PassengerFlightEntity> passengerFlights)
-        {
-            var correntBaggagesCount = 0;
-            foreach (var passengerFlight in passengerFlights)
-            {
-                correntBaggagesCount += passengerFlight.BaggagesCount;
-            }
-
-            if ((correntBaggagesCount + requestBaggagesCount) > baggagesLimit)
-            {
-                throw new BusinessRuleException($"Aircraft limited to {baggagesLimit} number of bags");
-            }
-        }
-
-        private static void ValidateAircraftWeightLimit(
-            decimal requestBagsWeight,
-            decimal aircraftWeightLimit,
-            ICollection<PassengerFlightEntity> passengerFlights)
-        {
-            decimal correntAircraftWeight = 0;
-            foreach (var passengerFlight in passengerFlights)
-            {
-                correntAircraftWeight += passengerFlight.Baggages?.Sum(x => x.Weight) ?? 0;
-            }
-
-            if ((correntAircraftWeight + requestBagsWeight) > aircraftWeightLimit)
-            {
-                throw new BusinessRuleException($"Aircraft has a limited load weight of {aircraftWeightLimit}");
-            }
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using Britannica.Application.Contracts;
-using Britannica.Application.Exceptions;
 using Britannica.Domain.Entities;
+using Britannica.Domain.Exceptions;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;

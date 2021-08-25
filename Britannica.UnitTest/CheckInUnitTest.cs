@@ -1,7 +1,7 @@
 using Britannica.Application.Contracts;
-using Britannica.Application.Exceptions;
 using Britannica.Application.Interactors;
 using Britannica.Domain.Entities;
+using Britannica.Domain.Exceptions;
 using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 using System;

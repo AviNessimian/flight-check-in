@@ -25,6 +25,10 @@ namespace Britannica.Domain.Entities
 
         public int BaggagesCount => Baggages?.Count() ?? 0;
 
+        public decimal BaggagesWeightSum => Baggages?.Sum(x => x.Weight) ?? 0;
+
+        
+
         public static class Factory
         {
             public static PassengerFlightEntity Create(

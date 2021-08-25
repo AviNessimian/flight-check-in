@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Britannica.Application.Exceptions
+namespace Britannica.Domain.Exceptions
 {
     public class BusinessRuleException : Exception
     {

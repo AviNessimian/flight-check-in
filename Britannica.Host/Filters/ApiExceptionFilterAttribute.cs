@@ -1,5 +1,4 @@
-﻿using Britannica.Application.Exceptions;
-using Britannica.Domain.Exceptions;
+﻿using Britannica.Domain.Exceptions;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
