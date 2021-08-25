@@ -63,7 +63,7 @@ namespace Britannica.Application.Interactors
             _ = flight ?? throw new NotFoundException($"Flight {flight} not found.");
 
             //1. Aircraft has a limited load weight 
-            flight.ValidateAircraftWeightLimit(request.BaggageTotalWeight, flight.PassengerFlights);
+            flight.ValidateAircraftWeightLimit(request.BaggageTotalWeight);
 
             //2. Aircraft’s seats are limited. Beware of overbooking.
             var seat = await _aircraftRepository.GetSeat(request.SeatId, cancellationToken);
@@ -71,7 +71,7 @@ namespace Britannica.Application.Interactors
             seat.ValidateSeatAvailability();
 
             //3. Each passenger is allowed to check-in a limited number of bags
-            flight.ValidateAircraftNumberOfBagsLimit(request.BaggagesCount, flight.PassengerFlights);
+            flight.ValidateAircraftNumberOfBagsLimit(request.BaggagesCount);
 
             //4. The total weight of a passenger’s baggage is also limited.
             flight.ValidateTotalPassengerWeightLimit(request.BaggagesCount);
@@ -83,7 +83,6 @@ namespace Britannica.Application.Interactors
                 request.BaggageWeights);
 
             await _passengerRepository.CheckIn(newPassengerFlight, cancellationToken);
-
             return newPassengerFlight;
         }
     }

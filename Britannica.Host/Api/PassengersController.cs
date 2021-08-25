@@ -47,11 +47,8 @@ namespace Britannica.Host.Api
             CancellationToken cancellationToken)
         {
             var createdEntity = await _mediator.Send(request, cancellationToken);
-            var queryParams = new
-            {
-                createdEntity.Id
-            };
-            var fullCreatedEntityUrl = this.Url.Action(nameof(Flights), "Passengers", queryParams, Request.Scheme);
+            var queryParams = new { createdEntity.Id };
+            var fullCreatedEntityUrl = Url.Action(nameof(Flights), "Passengers", queryParams, Request.Scheme);
             return Created(fullCreatedEntityUrl, createdEntity);
         }
     }

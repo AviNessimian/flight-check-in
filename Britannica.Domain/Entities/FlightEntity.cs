@@ -20,32 +20,28 @@ namespace Britannica.Domain.Entities
         public ICollection<PassengerFlightEntity> PassengerFlights { get; set; }
 
 
-        public void ValidateTotalPassengerWeightLimit(int requestBaggagesCount)
+        public void ValidateTotalPassengerWeightLimit(int requestedBaggagesCount)
         {
-            if (requestBaggagesCount > Aircraft.PassengerBagsLimit)
+            if (requestedBaggagesCount > Aircraft.PassengerBagsLimit)
             {
                 throw new BusinessRuleException($"The total weight of a passenger’s baggage" +
                     $" is limited to {Aircraft.PassengerBagsLimit}");
             }
         }
 
-        public void ValidateAircraftNumberOfBagsLimit(
-            int requestBaggagesCount,
-            ICollection<PassengerFlightEntity> passengerFlights)
+        public void ValidateAircraftNumberOfBagsLimit(int requestedBaggagesCount)
         {
-            var currentBaggagesCount = passengerFlights.Sum(x => x.BaggagesCount);
-            if ((currentBaggagesCount + requestBaggagesCount) > Aircraft.BaggagesLimit)
+            var currentBaggagesCount = PassengerFlights.Sum(x => x.BaggagesCount);
+            if ((currentBaggagesCount + requestedBaggagesCount) > Aircraft.BaggagesLimit)
             {
                 throw new BusinessRuleException($"Aircraft limited to {Aircraft.BaggagesLimit} number of bags");
             }
         }
 
-        public void ValidateAircraftWeightLimit(
-            decimal requestBagsWeight,
-            ICollection<PassengerFlightEntity> passengerFlights)
+        public void ValidateAircraftWeightLimit(decimal requestedBagsWeight)
         {
-            var currentAircraftWeight = passengerFlights.Sum(x => x.BaggagesWeightSum);
-            if ((currentAircraftWeight + requestBagsWeight) > Aircraft.WeightLimit)
+            var currentAircraftWeight = PassengerFlights.Sum(x => x.BaggagesWeightSum);
+            if ((currentAircraftWeight + requestedBagsWeight) > Aircraft.WeightLimit)
             {
                 throw new BusinessRuleException($"Aircraft has a limited load weight of {Aircraft.WeightLimit}");
             }
