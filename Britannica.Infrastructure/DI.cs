@@ -22,7 +22,6 @@ namespace Britannica.Infrastructure
             builder.RegisterType<DateTimeService>().As<IDateTime>().InstancePerLifetimeScope();
             builder.RegisterType<FlightRepository>().As<IFlightRepository>().InstancePerLifetimeScope();
             builder.RegisterType<PassengerRepository>().As<IPassengerRepository>().InstancePerLifetimeScope();
-            builder.RegisterType<AircraftRepository>().As<IAircraftRepository>().InstancePerLifetimeScope();
             
             return builder;
         }

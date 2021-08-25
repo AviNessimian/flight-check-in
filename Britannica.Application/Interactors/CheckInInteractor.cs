@@ -42,18 +42,15 @@ namespace Britannica.Application.Interactors
     {
         private readonly ILogger<CheckInInteractor> _logger;
         private readonly IFlightRepository _flightRepository;
-        private readonly IAircraftRepository _aircraftRepository;
         private readonly IPassengerRepository _passengerRepository;
 
         public CheckInInteractor(
             ILogger<CheckInInteractor> logger,
             IFlightRepository flightRepository,
-            IAircraftRepository aircraftRepository,
             IPassengerRepository passengerRepository)
         {
             _logger = logger;
             _flightRepository = flightRepository;
-            _aircraftRepository = aircraftRepository;
             _passengerRepository = passengerRepository;
         }
 
@@ -66,7 +63,7 @@ namespace Britannica.Application.Interactors
             flight.ValidateAircraftWeightLimit(request.BaggageTotalWeight);
 
             //2. Aircraft’s seats are limited. Beware of overbooking.
-            var seat = await _aircraftRepository.GetSeat(request.SeatId, cancellationToken);
+            var seat = await _flightRepository.GetSeat(request.SeatId, cancellationToken);
             _ = seat ?? throw new NotFoundException($"Seat {request.SeatId} is not found.");
             seat.ValidateSeatAvailability();
 

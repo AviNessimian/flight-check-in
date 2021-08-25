@@ -20,7 +20,6 @@ namespace Britannica.UnitTest
             var cToken = CancellationToken.None;
 
             var logger = new NullLogger<CheckInInteractor>();
-            var aircraftRepositoryMock = Mock.Of<IAircraftRepository>();
             var passengerRepositoryMock = Mock.Of<IPassengerRepository>();
 
             var flightRepositoryMock = new Mock<IFlightRepository>();
@@ -57,7 +56,6 @@ namespace Britannica.UnitTest
             var interactor = new CheckInInteractor(
                 logger,
                 flightRepositoryMock.Object,
-                aircraftRepositoryMock,
                 passengerRepositoryMock);
 
             var request = new CheckInRequest
