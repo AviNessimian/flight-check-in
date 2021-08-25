@@ -80,7 +80,7 @@ namespace Britannica.Application.Interactors
                 flightId: request.FlightId,
                 passengerId: request.PassengerId,
                 seatId: request.SeatId,
-                request.BaggageWeights);
+                baggagesWeight: request.BaggageWeights);
 
             await _passengerRepository.CheckIn(newPassengerFlight, cancellationToken);
             return newPassengerFlight;
