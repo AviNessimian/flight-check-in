@@ -29,6 +29,7 @@ namespace Britannica.Infrastructure.Repositories
                 .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
 
             flight.Aircraft.Seats = await GetSeats(flight.Aircraft.Id, cancellationToken);
+
             return flight;
         }
 
@@ -44,10 +45,12 @@ namespace Britannica.Infrastructure.Repositories
                 .Include(x => x.PassengerFlights);
 
             var paginatedFlights = await flightsQuery.PaginateAsync(pageIndex, totalPages, cancellationToken);
+
             foreach (var flight in paginatedFlights)
             {
                 flight.Aircraft.Seats = await GetSeats(flight.Aircraft.Id, cancellationToken);
             }
+
             return paginatedFlights;
         }
 

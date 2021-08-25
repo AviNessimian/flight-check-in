@@ -13,7 +13,6 @@ namespace Britannica.Infrastructure.Configurations
 
             builder.Property(t => t.FirtName).HasMaxLength(50).IsRequired();
             builder.Property(t => t.LastName).HasMaxLength(50).IsRequired();
-
         }
     }
 }

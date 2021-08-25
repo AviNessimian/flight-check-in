@@ -19,15 +19,12 @@ namespace Britannica.Domain.Entities
         [JsonIgnore]
         public PassengerEntity Passenger { get; set; }
 
-        //public PassengerFlightSeatEntity PassengerFlightSeat { get; set; }
         public int SeatId { get; set; }
         public ICollection<BaggageEntity> Baggages { get; set; }
 
         public int BaggagesCount => Baggages?.Count() ?? 0;
 
         public decimal BaggagesWeightSum => Baggages?.Sum(x => x.Weight) ?? 0;
-
-        
 
         public static class Factory
         {

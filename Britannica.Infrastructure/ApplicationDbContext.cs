@@ -1,11 +1,9 @@
 ﻿using Britannica.Domain.Bases;
 using Britannica.Domain.Entities;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Configuration;
 using System;
-using System.IO;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
@@ -33,7 +31,6 @@ namespace Britannica.Infrastructure
         public DbSet<AircraftEntity> Aircrafts { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options) => options.UseSqlite($"Data Source={_dbPath}");
-
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {

@@ -18,7 +18,6 @@ namespace Britannica.Infrastructure.Configurations
                 .HasOne(b => b.Aircraft)
                 .WithOne(b => b.Flight)
                 .HasForeignKey<AircraftEntity>(b => b.FlightRef);
-
         }
     }
 }

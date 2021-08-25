@@ -9,7 +9,6 @@ namespace Britannica.Application.Contracts
     {
         Task<PaginatedResponse<FlightEntity>> Get(int pageIndex, int totalPages, CancellationToken cancellationToken);
         Task<FlightEntity> Get(int id, CancellationToken cancellationToken);
-
         Task<SeatEntity> GetSeat(int seatId, CancellationToken cancellationToken);
     }
 }

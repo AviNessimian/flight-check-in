@@ -14,7 +14,6 @@ namespace Britannica.Domain.Entities
         public ushort BaggagesLimit { get; set; }
         public ICollection<SeatEntity> Seats { get; set; }
 
-
         public int FlightRef { get; set; }
 
         [JsonIgnore]
@@ -22,14 +21,5 @@ namespace Britannica.Domain.Entities
 
         public int SeatsCount => (Seats?.Count() ?? 0);
         public int PassengerBagsLimit => BaggagesLimit / SeatsCount;
-
-
-        public bool GetAvailableSeat()
-        {
-
-
-            return true;
-        }
     }
-
 }

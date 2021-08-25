@@ -6,6 +6,4 @@ namespace Britannica.Domain.Exceptions
     {
         public NotFoundException(string msg) : base(msg) { }
     }
-
-    
 }

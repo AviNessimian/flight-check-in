@@ -17,7 +17,9 @@ namespace Britannica.Infrastructure.Common
              where T : AuditableEntity
         {
             var count = await source.CountAsync();
-            var items = await source.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync(cancellationToken);
+            var items = await source.Skip((pageIndex - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync(cancellationToken);
             return new PaginatedResponse<T>(items, count, pageIndex, pageSize);
         }
     }
