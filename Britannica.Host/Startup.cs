@@ -101,7 +101,7 @@ namespace Britannica.Host
                 {
                     Contact = new OpenApiContact
                     {
-                        Name = "Avi Nessimian",
+                        Name = "Avi Nessimiann",
                         Email = "nessimian.avi@gmail.com",
                         Url = new Uri("https://github.com/AviNessimian"),
                     }
