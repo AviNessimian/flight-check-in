@@ -7,19 +7,25 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{C53AD94A-8
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{E9D51207-429E-424A-9F11-31E7E4926B88}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Britannica.Host", "Britannica.Host\Britannica.Host.csproj", "{BF0D0B52-D82A-420B-B470-EF1F137CFD30}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Britannica.Host", "Britannica.Host\Britannica.Host.csproj", "{BF0D0B52-D82A-420B-B470-EF1F137CFD30}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Britannica.Domain", "Britannica.Domain\Britannica.Domain.csproj", "{4CB15B3A-58F9-484E-A9DF-F331720C56B7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Britannica.Domain", "Britannica.Domain\Britannica.Domain.csproj", "{4CB15B3A-58F9-484E-A9DF-F331720C56B7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Britannica.Application", "Britannica.Application\Britannica.Application.csproj", "{0C829619-7283-4EFA-ADE3-B8591DD655F9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Britannica.Application", "Britannica.Application\Britannica.Application.csproj", "{0C829619-7283-4EFA-ADE3-B8591DD655F9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Britannica.Infrastructure", "Britannica.Infrastructure\Britannica.Infrastructure.csproj", "{0BDA8F8F-EF00-4769-B845-5B596D62DC44}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Britannica.Infrastructure", "Britannica.Infrastructure\Britannica.Infrastructure.csproj", "{0BDA8F8F-EF00-4769-B845-5B596D62DC44}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Britannica.UnitTest", "Britannica.UnitTest\Britannica.UnitTest.csproj", "{1062B562-8F49-4518-9426-EA4CCEEC6133}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Britannica.UnitTest", "Britannica.UnitTest\Britannica.UnitTest.csproj", "{1062B562-8F49-4518-9426-EA4CCEEC6133}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{40A1255E-16C9-4D84-8738-627AB113AD16}"
 	ProjectSection(SolutionItems) = preProject
 		Flight-Assessment.pdf = Flight-Assessment.pdf
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker", "docker", "{D4AEF89F-F07F-4912-BB88-5CF48DF652B6}"
+	ProjectSection(SolutionItems) = preProject
+		commands.txt = commands.txt
+		Dockerfile = Dockerfile
 	EndProjectSection
 EndProject
 Global
