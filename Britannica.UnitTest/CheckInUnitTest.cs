@@ -14,6 +14,7 @@ namespace Britannica.UnitTest
 {
     public class CheckInUnitTest
     {
+        [Fact]
         public void CheckInInteractor_ValidateAircraftWeightLimit_ThrowsBusinessRuleException()
         {
             //arrange

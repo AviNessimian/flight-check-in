@@ -13,6 +13,9 @@ COPY  ["/Britannica.UnitTest/*.csproj", "./Britannica.UnitTest/"]
 
 RUN dotnet restore
 
+# run tests on docker build
+RUN dotnet test --logger:trx
+
 # Copy everything else and build
 COPY . ./
 RUN dotnet publish -c Release -o out
