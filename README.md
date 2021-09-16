@@ -4,6 +4,7 @@ Design and implement a .Net (Core) Web API solution, which automates check-in in
 ##### [Go To Exercise README](/Flight-Assessment.pdf)
 ___
 
+
 # Using:
   * DotNet Core 3.1
   * OpenApi (swagger)
