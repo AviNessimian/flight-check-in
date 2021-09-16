@@ -79,7 +79,7 @@ namespace Britannica.UnitTest
             var exception = Assert.Throws<BusinessRuleException>(act);
 
             //More detailed assertions.
-            Assert.Equal($"Aircraft has a limited load weight of {flight.Result.Aircraft.WeightLimit}", exception.Message);
+            Assert.Equal($"ircraft has a limited load weight of {flight.Result.Aircraft.WeightLimit}", exception.Message);
 
         }
     }
