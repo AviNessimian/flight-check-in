@@ -1,7 +1,7 @@
 # BritannicaSln
 Design and implement a .Net (Core) Web API solution, which automates check-in into a flight
 
-##### [Go To Exercise README](/Flight-Assessment.pdf)
+##### [Go To Assessment](/Flight-Assessment.pdf)
 
 ## Using:
   - DotNet Core 3.1
