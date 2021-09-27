@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Britannica.Application.Interactors
 {
-
+    /// <exception cref="NotFoundException">Thrown when passengers not found.</exception>
     public class GetPassengersRequest : PaginatedRequest, IRequest<List<PassengerEntity>>
     {
         public GetPassengersRequest(int pageIndex, int totalPages)
@@ -31,7 +31,7 @@ namespace Britannica.Application.Interactors
         public async Task<List<PassengerEntity>> Handle(GetPassengersRequest request, CancellationToken cancellationToken)
         {
             var flight = await _passengerRepository.GetPassengers(request.PageIndex, request.TotalPages, cancellationToken);
-            _ = flight ?? throw new NotFoundException($"Passengers Not Found");
+            _ = flight ?? throw new NotFoundException($"Passengers not found");
             return flight;
         }
     }

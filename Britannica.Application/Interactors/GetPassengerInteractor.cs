@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 namespace Britannica.Application.Interactors
 {
 
+    /// <exception cref="NotFoundException">Thrown when passenger passenger not found.</exception>
     public class GetPassengerRequest : IRequest<PassengerEntity>
     {
         public GetPassengerRequest(int id)
@@ -29,7 +30,7 @@ namespace Britannica.Application.Interactors
         public async Task<PassengerEntity> Handle(GetPassengerRequest request, CancellationToken cancellationToken)
         {
             var passenger = await _passengerRepository.Get(request.Id, cancellationToken);
-            _ = passenger ?? throw new NotFoundException($"Passenger {passenger.Id} Not Found");
+            _ = passenger ?? throw new NotFoundException($"Passenger {passenger.Id} not found");
             return passenger;
         }
     }

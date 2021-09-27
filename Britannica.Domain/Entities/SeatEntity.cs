@@ -23,6 +23,7 @@ namespace Britannica.Domain.Entities
 
 
 
+        /// <exception cref="BusinessRuleException">Thrown when seat is not available.</exception>
         public void ValidateSeatAvailability()
         {
             if (!(IsAvailable ?? true))

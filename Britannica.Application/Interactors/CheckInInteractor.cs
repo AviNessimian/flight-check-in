@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 
 namespace Britannica.Application.Interactors
 {
+    /// <exception cref="NotFoundException">Thrown when flight or seat not found.</exception>
+    /// <exception cref="BusinessRuleException">Thrown when business rule validity.</exception>
     public class CheckInRequest : IRequest<PassengerFlightEntity>
     {
         public CheckInRequest() { }
@@ -56,21 +58,18 @@ namespace Britannica.Application.Interactors
 
         public async Task<PassengerFlightEntity> Handle(CheckInRequest request, CancellationToken cancellationToken)
         {
-            var flight = await _flightRepository.Get(request.FlightId, cancellationToken);
-            _ = flight ?? throw new NotFoundException($"Flight {flight} not found.");
-
-            //1. Aircraft has a limited load weight 
+            _logger.LogDebug("1. Aircraft has a limited load weight");
+            var flight = await GetFlight(request.FlightId, cancellationToken);
             flight.ValidateAircraftWeightLimit(request.BaggageTotalWeight);
 
-            //2. Aircraft’s seats are limited. Beware of overbooking.
-            var seat = await _flightRepository.GetSeat(request.SeatId, cancellationToken);
-            _ = seat ?? throw new NotFoundException($"Seat {request.SeatId} is not found.");
+            _logger.LogDebug("2. Aircraft’s seats are limited. Beware of overbooking.");
+            var seat = await GetSeat(request.SeatId, cancellationToken);
             seat.ValidateSeatAvailability();
 
-            //3. Each passenger is allowed to check-in a limited number of bags
+            _logger.LogDebug("3. Each passenger is allowed to check-in a limited number of bags.");
             flight.ValidateAircraftNumberOfBagsLimit(request.BaggagesCount);
 
-            //4. The total weight of a passenger’s baggage is also limited.
+            _logger.LogDebug($"4. The total weight of a passenger’s baggage is also limited.");
             flight.ValidateTotalPassengerWeightLimit(request.BaggagesCount);
 
             var newPassengerFlight = PassengerFlightEntity.Factory.Create(
@@ -79,8 +78,24 @@ namespace Britannica.Application.Interactors
                 seatId: request.SeatId,
                 baggagesWeight: request.BaggageWeights);
 
+            _logger.LogInformation($"Performing Check for {newPassengerFlight}");
             await _passengerRepository.CheckIn(newPassengerFlight, cancellationToken);
+
             return newPassengerFlight;
+        }
+
+        private async Task<SeatEntity> GetSeat(int seatId, CancellationToken cancellationToken)
+        {
+            var seat = await _flightRepository.GetSeat(seatId, cancellationToken);
+            _ = seat ?? throw new NotFoundException($"Seat {seatId} not found.");
+            return seat;
+        }
+
+        private async Task<FlightEntity> GetFlight(int flightId, CancellationToken cancellationToken)
+        {
+            var flight = await _flightRepository.Get(flightId, cancellationToken);
+            _ = flight ?? throw new NotFoundException($"Flight {flightId} not found.");
+            return flight;
         }
     }
 }

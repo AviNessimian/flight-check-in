@@ -9,28 +9,15 @@ namespace Britannica.Application.Bases
         {
             PageIndex = pageIndex;
             TotalPages = (int)Math.Ceiling(count / (double)pageSize);
-
-            this.AddRange(items);
+            AddRange(items);
         }
 
         public int PageIndex { get; }
         public int TotalPages { get; }
 
 
-        public bool HasPreviousPage
-        {
-            get
-            {
-                return (PageIndex > 1);
-            }
-        }
+        public bool HasPreviousPage => PageIndex > 1;
 
-        public bool HasNextPage
-        {
-            get
-            {
-                return (PageIndex < TotalPages);
-            }
-        }
+        public bool HasNextPage => PageIndex < TotalPages;
     }
 }

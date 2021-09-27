@@ -26,6 +26,14 @@ namespace Britannica.Domain.Entities
 
         public decimal BaggagesWeightSum => Baggages?.Sum(x => x.Weight) ?? 0;
 
+
+        public override string ToString() => 
+            $"{nameof(FlightId)}: {FlightId}, " +
+            $"{nameof(PassengerId)}: {PassengerId}, " +
+            $"{nameof(SeatId)}: {SeatId}, " +
+            $"{nameof(BaggagesWeightSum)}: {BaggagesWeightSum}";
+
+
         public static class Factory
         {
             public static PassengerFlightEntity Create(
@@ -38,17 +46,12 @@ namespace Britannica.Domain.Entities
                 {
                     FlightId = flightId,
                     PassengerId = passengerId,
-                    SeatId = seatId
-                };
-
-                newPassengerFlight.Baggages = new List<BaggageEntity>();
-                foreach (var bagWeight in baggagesWeight)
-                {
-                    newPassengerFlight.Baggages.Add(new BaggageEntity
+                    SeatId = seatId,
+                    Baggages = baggagesWeight.Select(weight => new BaggageEntity
                     {
-                        Weight = bagWeight,
-                    });
-                }
+                        Weight = weight
+                    }).ToList()
+                };
 
                 return newPassengerFlight;
             }

@@ -41,7 +41,7 @@ namespace Britannica.Host.Api
             => Ok(await _mediator.Send(new GetPassengerFlightRequest(id), cancellationToken));
 
         [HttpPost(nameof(CheckIn))]
-        [ProducesResponseType(typeof(CreatedResult), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<ActionResult> CheckIn(
             [FromBody] CheckInRequest request,
             CancellationToken cancellationToken)

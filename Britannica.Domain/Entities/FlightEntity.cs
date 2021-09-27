@@ -20,6 +20,7 @@ namespace Britannica.Domain.Entities
         public ICollection<PassengerFlightEntity> PassengerFlights { get; set; }
 
 
+        /// <exception cref="BusinessRuleException">Thrown when total weight of a passenger’s baggage limite exceeded.</exception>
         public void ValidateTotalPassengerWeightLimit(int requestedBaggagesCount)
         {
             if (requestedBaggagesCount > Aircraft.PassengerBagsLimit)
@@ -29,6 +30,7 @@ namespace Britannica.Domain.Entities
             }
         }
 
+        /// <exception cref="BusinessRuleException">Thrown when aircraft number of bags limite exceeded.</exception>
         public void ValidateAircraftNumberOfBagsLimit(int requestedBaggagesCount)
         {
             var currentBaggagesCount = PassengerFlights.Sum(x => x.BaggagesCount);
@@ -38,6 +40,7 @@ namespace Britannica.Domain.Entities
             }
         }
 
+        /// <exception cref="BusinessRuleException">Thrown when aircraft load weight limite exceeded.</exception>
         public void ValidateAircraftWeightLimit(decimal requestedBagsWeight)
         {
             var currentAircraftWeight = PassengerFlights.Sum(x => x.BaggagesWeightSum);
