@@ -1,13 +1,5 @@
 pipeline {
-    agent {
-        dockerfile {
-            filename 'Dockerfile.sdk'
-        }
-        //docker {
-        //    image 'mcr.microsoft.com/dotnet/sdk:3.1'
-        //}
-        
-    }
+    agent any
     stages {
         stage('Verify') {
             steps {
@@ -19,20 +11,10 @@ pipeline {
                 sh 'ls -l "$WORKSPACE"'
             }
         }
-        //stage('Build') {
-        //    steps {
-        //        sh 'dotnet build "$WORKSPACE/Britannica.Host/Britannica.Host.csproj"'
-        //    }
-        //}
         stage('Unit Test') {
             steps {
                 sh 'dotnet test "$WORKSPACE/Britannica.UnitTest/Britannica.UnitTest.csproj"'
             }
         }
-        //stage('Smoke Test') {
-        //    steps {
-        //        sh 'dotnet "$WORKSPACE/Britannica.Host/bin/Debug/netcoreapp3.1/Britannica.Host.dll"'
-        //    }
-        //}
     }
 }
