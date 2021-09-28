@@ -27,7 +27,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{3B0B073E
 		commands.txt = commands.txt
 		Dockerfile = Dockerfile
 		Dockerfile.sdk = Dockerfile.sdk
-		Jenkinsfile.test = Jenkinsfile.test
+		Jenkinsfile = Jenkinsfile
 	EndProjectSection
 EndProject
 Global

@@ -3,10 +3,6 @@ pipeline {
         dockerfile {
             filename 'Dockerfile.sdk'
         }
-        //docker {
-        //    image 'mcr.microsoft.com/dotnet/sdk:3.1'
-        //}
-        
     }
     stages {
         stage('Verify') {
