@@ -29,10 +29,10 @@ pipeline {
                 sh 'dotnet test "$WORKSPACE/Britannica.UnitTest/Britannica.UnitTest.csproj"'
             }
         }
-        stage('Smoke Test') {
-            steps {
-                sh 'dotnet "$WORKSPACE/Britannica.Host/bin/Debug/netcoreapp3.1/Britannica.Host.dll"'
-            }
-        }
+        //stage('Smoke Test') {
+        //    steps {
+        //        sh 'dotnet "$WORKSPACE/Britannica.Host/bin/Debug/netcoreapp3.1/Britannica.Host.dll"'
+        //    }
+        //}
     }
 }
