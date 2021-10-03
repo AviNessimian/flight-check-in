@@ -12,8 +12,8 @@ Design and implement a .Net (Core) Web API solution, which automates check-in in
   - MediatR
   - Clean Architecture
   - Clean Code
-  - Docker
-  - Jenkins
+  - Dockerfile
+  - Jenkinsfile
 ___
 
 # Build and run the Docker image
