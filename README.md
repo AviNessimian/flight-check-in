@@ -1,4 +1,4 @@
-# BritannicaSln
+# flight-check-in
 Design and implement a .Net (Core) Web API solution, which automates check-in into a flight
 
 ##### [Go To Assessment](/Flight-Assessment.pdf)
