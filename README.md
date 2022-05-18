@@ -1,7 +1,7 @@
 # flight-check-in
 Design and implement a .Net (Core) Web API solution, which automates check-in into a flight
 
-##### [Demo Api](https://flight-check-in.scuticode.com/swagger/index.html)
+##### [Live Demo](https://flight-check-in.scuticode.com/swagger/index.html)
 
 ##### [Go To Assessment](/Flight-Assessment.pdf)
 
