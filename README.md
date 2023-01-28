@@ -3,27 +3,29 @@ Design and implement a .Net (Core) Web API solution, which automates check-in in
 
 ##### [Live Demo](https://flight-check-in.scuticode.com/swagger/index.html)
 
-##### [Go To Assessment](/Flight-Assessment.pdf)
 
+Design and implement a .Net (Core) Web API solution, which automates check-in into a flight. 
+The solution should register a passenger and his baggage to a flight. 
 
-## Table of Contents:
-  - DotNet Core 3.1
-  - OpenApi (swagger)
-  - MediatR
-  - Clean Architecture
-  - Clean Code
-  - Docker
-  - Jenkins pipeline
-___
+***
+Assumptions:
+* Seats support is not required. 
+* A flight, passenger, and their details already exist in the database. 
+* Using abstractions (repository, etc.) to access a DB is enough. 
 
-# Build and run the Docker image
-Open a command prompt and navigate to your project folder.
-Use the following commands to build and run your Docker image:
+***
+Invariants: 
+* Aircraft has a limited load weight. So the total baggage weight must be controlled. 
+* Aircraft's seats are limited. Beware of overbooking. 
+* Each passenger is allowed to check-in a limited number of bags. 
+* The total weight of a passenger's baggage is also limited. 
 
-```
- docker build -t aspnetapp .
- docker run -d -p 8080:80 --name myapp aspnetapp
- ```
+***
+Technical requirements: 
+* API controller(s) with proper routes (are) mandatory. 
+* At least a few unit tests. 
+* Clean, maintainable, production-ready code. 
+
 
 
   
