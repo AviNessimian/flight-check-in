@@ -1,5 +1,4 @@
-# Senior BackEnd Engineer Exercise: flight-check-in
-Design and implement a .Net (Core) Web API solution, which automates check-in into a flight
+# Senior BackEnd Engineer Exercise
 
 ##### [Live Demo](https://flight-check-in.scuticode.com/swagger/index.html)
 
