@@ -8,7 +8,7 @@ The solution should register a passenger and his baggage to a flight.
 
 ***
 Assumptions:
-* Seats support is not required. 
+* Seats support is required. 
 * A flight, passenger, and their details already exist in the database. 
 * Using abstractions (repository, etc.) to access a DB is enough. 
 
