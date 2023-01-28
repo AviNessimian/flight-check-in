@@ -13,7 +13,6 @@ Assumptions:
 
 ***
 Invariants: 
-* Seats support is required. 
 * Aircraft has a limited load weight. So the total baggage weight must be controlled. 
 * Aircraft's seats are limited. Beware of overbooking. 
 * Each passenger is allowed to check-in a limited number of bags. 
