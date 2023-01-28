@@ -8,12 +8,12 @@ The solution should register a passenger and his baggage to a flight.
 
 ***
 Assumptions:
-* Seats support is required. 
 * A flight, passenger, and their details already exist in the database. 
 * Using abstractions (repository, etc.) to access a DB is enough. 
 
 ***
 Invariants: 
+* Seats support is required. 
 * Aircraft has a limited load weight. So the total baggage weight must be controlled. 
 * Aircraft's seats are limited. Beware of overbooking. 
 * Each passenger is allowed to check-in a limited number of bags. 
