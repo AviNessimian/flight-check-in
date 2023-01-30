@@ -23,10 +23,3 @@ Technical requirements:
 * API controller(s) with proper routes (are) mandatory. 
 * At least a few unit tests. 
 * Clean, maintainable, production-ready code. 
-
-
-
-  
-
-
-
